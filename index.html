@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Neumorphic Weather App</title>
+  <title>Neon Clouds | Aba-Art</title>
+  <meta name="description" content="Cloud Overwatch App" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <style>
@@ -12,19 +13,37 @@
       border-radius: 20px;
       box-shadow: 10px 10px 30px #bebebe, -10px -10px 30px #ffffff;
     }
+
+    .neon-text {
+      color: #0ff;
+      text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
+    }
+
+    .neon-ring {
+      border-radius: 50%;
+      box-shadow: 0 0 15px 3px #0ff, inset 0 0 15px 3px #0ff;
+      padding: 10px;
+      margin-top: 10px;
+      display: inline-block;
+    }
   </style>
 </head>
-<body class="bg-gray-200 flex items-center justify-center min-h-screen">
+<body class="bg-gray-900 flex flex-col items-center justify-center min-h-screen text-white">
 
   <div class="neumorphic p-8 w-80 text-center">
-    <h1 class="text-2xl font-bold mb-4">Weather</h1>
-    <div id="location" class="text-gray-600 mb-2">Detecting location...</div>
-    <div id="temperature" class="text-4xl font-semibold mb-2">--°C</div>
-    <div id="description" class="capitalize text-lg mb-4">--</div>
+    <h1 class="text-2xl font-bold mb-1 neon-text">Aba-Art</h1>
+    <p class="text-sm mb-4 text-gray-400">Cloud Overwatch App</p>
 
-    <!-- Lottie animation will go here -->
-    <div id="lottie-icon" class="w-40 h-40 mx-auto"></div>
+    <div id="location" class="text-gray-300 mb-2">Detecting location...</div>
+    <div id="temperature" class="text-4xl font-semibold mb-2 neon-text">--°C</div>
+    <div id="description" class="capitalize text-lg mb-4 neon-text">--</div>
+
+    <div id="lottie-icon" class="neon-ring w-40 h-40 mx-auto"></div>
   </div>
+
+  <footer class="mt-6 text-sm text-gray-500">
+    © Aba-Art-App
+  </footer>
 
   <script>
     const apiKey = "097cb68abff2af33526e7777ce5ac36b";
