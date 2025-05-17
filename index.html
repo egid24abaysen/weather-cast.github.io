@@ -6,7 +6,7 @@
   <title>Neon Clouds | Aba-Art</title>
   <meta name="description" content="Cloud Overwatch App" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <style>
     :root {
       --neon: #00fff7;
@@ -25,6 +25,16 @@
         8px 8px 16px rgba(0, 0, 0, 0.6),
         -6px -6px 12px rgba(255, 255, 255, 0.03);
       transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 1s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .neon-text {
@@ -36,14 +46,29 @@
       border-radius: 50%;
       box-shadow: 0 0 12px 3px var(--neon), inset 0 0 8px 2px var(--neon);
       background: rgba(0, 255, 247, 0.05);
-      padding: 10px;
+      padding: 20px;
       margin-top: 10px;
       display: inline-block;
+      animation: pulse 3s infinite ease-in-out;
     }
 
-    lottie-player {
-      width: 150px;
-      height: 150px;
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+
+    .weather-icon {
+      font-size: 60px;
+      color: var(--neon);
+      transition: transform 0.5s ease;
+    }
+
+    .weather-icon.change {
+      transform: rotate(360deg);
     }
   </style>
 </head>
@@ -57,7 +82,9 @@
     <div id="temperature" class="text-4xl font-semibold mb-2 neon-text">--°C</div>
     <div id="description" class="capitalize text-lg mb-4 neon-text">--</div>
 
-    <div id="lottie-icon" class="neon-ring mx-auto"></div>
+    <div id="icon" class="neon-ring mx-auto">
+      <i id="weather-icon" class="weather-icon fas fa-sun"></i>
+    </div>
   </div>
 
   <footer class="mt-6 text-sm text-gray-500">
@@ -67,21 +94,21 @@
   <script>
     const apiKey = "097cb68abff2af33526e7777ce5ac36b";
 
-    const weatherLotties = {
-      Clear: "https://lottie.host/fe94e720-1578-4a7c-b30e-2ec2bdaf9de0/t3cOQWgiFH.json",
-      Clouds: "https://lottie.host/19a49e8c-3a59-4d14-87a2-b1685eb5ea85/JymNozQKMC.json",
-      Rain: "https://lottie.host/8819a0ff-d7aa-4c02-a235-15b08b70f830/M0NWboU9oT.json",
-      Thunderstorm: "https://lottie.host/c2315b11-5e5d-44e0-bb84-6a62c37f69ca/FAYqRlmOiU.json",
-      Snow: "https://lottie.host/367f5669-f6b1-4641-92a9-e5944a404d52/9ucfsckCDQ.json",
-      Drizzle: "https://lottie.host/f0e9d5a6-187e-4d74-b373-3e3a6c07e9e3/kfwA17YyFc.json",
-      Mist: "https://lottie.host/228be1ff-0d02-43e1-9e1d-38ab999b0f34/I6xl0ULcWv.json",
-      Smoke: "https://lottie.host/b94fc220-ccf7-40d1-9e9a-d9ce327a4417/Wvl5YAzqt7.json",
-      Haze: "https://lottie.host/7f0d1eb8-f843-4dd4-82de-1f7aa2607a77/cJSO05Oihm.json",
-      Fog: "https://lottie.host/f8a4a450-332d-49cd-9b06-b96f0f0f4f58/T8YRx6vCKe.json",
-      Sand: "https://lottie.host/2c7d15df-6a0d-4af2-8850-d83cbacbd6d6/V5ECMEqYTr.json",
-      Ash: "https://lottie.host/f3db8478-29e7-4a0e-84b6-9a17a4fd36a5/SXYVA5ogOz.json",
-      Squall: "https://lottie.host/b5c4d4e9-6a3e-4a64-b490-7e2383b8c8a4/VljALtDaFL.json",
-      Tornado: "https://lottie.host/13a5a2be-d537-493c-b2ff-75f3725096e7/BaqDjfW6Cv.json"
+    const weatherIcons = {
+      Clear: "fa-sun",
+      Clouds: "fa-cloud",
+      Rain: "fa-cloud-showers-heavy",
+      Thunderstorm: "fa-bolt",
+      Snow: "fa-snowflake",
+      Drizzle: "fa-cloud-rain",
+      Mist: "fa-smog",
+      Smoke: "fa-smog",
+      Haze: "fa-smog",
+      Fog: "fa-smog",
+      Sand: "fa-smog",
+      Ash: "fa-smog",
+      Squall: "fa-wind",
+      Tornado: "fa-tornado"
     };
 
     async function fetchWeather(lat, lon) {
@@ -96,18 +123,32 @@
       const location = document.getElementById("location");
       const temperature = document.getElementById("temperature");
       const description = document.getElementById("description");
-      const lottieIcon = document.getElementById("lottie-icon");
+      const weatherIcon = document.getElementById("weather-icon");
 
       const weatherMain = data.weather[0].main;
+      const iconClass = weatherIcons[weatherMain] || "fa-question-circle";
 
       location.textContent = `${data.name}, ${data.sys.country}`;
-      temperature.textContent = `${Math.round(data.main.temp)}°C`;
       description.textContent = data.weather[0].description;
 
-      const lottieURL = weatherLotties[weatherMain] || weatherLotties["Clear"];
-      lottieIcon.innerHTML = `
-        <lottie-player src="${lottieURL}" background="transparent" speed="1" loop autoplay></lottie-player>
-      `;
+      // Animate temperature count up
+      const targetTemp = Math.round(data.main.temp);
+      let currentTemp = 0;
+      const step = targetTemp > 30 ? 2 : 1;
+
+      const counter = setInterval(() => {
+        if (currentTemp >= targetTemp) {
+          temperature.textContent = `${targetTemp}°C`;
+          clearInterval(counter);
+        } else {
+          currentTemp += step;
+          temperature.textContent = `${currentTemp}°C`;
+        }
+      }, 30);
+
+      // Animate icon change
+      weatherIcon.className = `weather-icon fas ${iconClass} change`;
+      setTimeout(() => weatherIcon.classList.remove("change"), 500);
     }
 
     function getLocation() {
