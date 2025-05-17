@@ -8,29 +8,48 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
   <style>
+    :root {
+      --neon: #00fff7;
+      --bg-dark: #121212;
+      --card-bg: #1f1f2e;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+    }
+
     .neumorphic {
-      background: #e0e0e0;
+      background: var(--card-bg);
       border-radius: 20px;
-      box-shadow: 10px 10px 30px #bebebe, -10px -10px 30px #ffffff;
+      box-shadow:
+        8px 8px 16px rgba(0, 0, 0, 0.6),
+        -6px -6px 12px rgba(255, 255, 255, 0.03);
+      transition: all 0.3s ease;
     }
 
     .neon-text {
-      color: #0ff;
-      text-shadow: 0 0 5px #0ff, 0 0 10px #0ff, 0 0 20px #0ff, 0 0 40px #0ff;
+      color: var(--neon);
+      text-shadow: 0 0 3px var(--neon), 0 0 7px var(--neon), 0 0 12px var(--neon);
     }
 
     .neon-ring {
       border-radius: 50%;
-      box-shadow: 0 0 15px 3px #0ff, inset 0 0 15px 3px #0ff;
+      box-shadow: 0 0 12px 3px var(--neon), inset 0 0 8px 2px var(--neon);
+      background: rgba(0, 255, 247, 0.05);
       padding: 10px;
       margin-top: 10px;
       display: inline-block;
     }
+
+    lottie-player {
+      width: 150px;
+      height: 150px;
+    }
   </style>
 </head>
-<body class="bg-gray-900 flex flex-col items-center justify-center min-h-screen text-white">
+<body class="text-white flex flex-col items-center justify-center min-h-screen px-4">
 
-  <div class="neumorphic p-8 w-80 text-center">
+  <div class="neumorphic p-6 max-w-xs w-full text-center">
     <h1 class="text-2xl font-bold mb-1 neon-text">Aba-Art</h1>
     <p class="text-sm mb-4 text-gray-400">Cloud Overwatch App</p>
 
@@ -38,7 +57,7 @@
     <div id="temperature" class="text-4xl font-semibold mb-2 neon-text">--°C</div>
     <div id="description" class="capitalize text-lg mb-4 neon-text">--</div>
 
-    <div id="lottie-icon" class="neon-ring w-40 h-40 mx-auto"></div>
+    <div id="lottie-icon" class="neon-ring mx-auto"></div>
   </div>
 
   <footer class="mt-6 text-sm text-gray-500">
