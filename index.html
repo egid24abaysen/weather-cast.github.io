@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neumorphic Weather App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
+  <style>
+    .neumorphic {
+      background: #e0e0e0;
+      border-radius: 20px;
+      box-shadow: 10px 10px 30px #bebebe, -10px -10px 30px #ffffff;
+    }
+  </style>
+</head>
+<body class="bg-gray-200 flex items-center justify-center min-h-screen">
+
+  <div class="neumorphic p-8 w-80 text-center">
+    <h1 class="text-2xl font-bold mb-4">Weather</h1>
+    <div id="location" class="text-gray-600 mb-2">Detecting location...</div>
+    <div id="temperature" class="text-4xl font-semibold mb-2">--°C</div>
+    <div id="description" class="capitalize text-lg mb-4">--</div>
+
+    <!-- Lottie animation will go here -->
+    <div id="lottie-icon" class="w-40 h-40 mx-auto"></div>
+  </div>
+
+  <script>
+    const apiKey = "097cb68abff2af33526e7777ce5ac36b";
+
+    const weatherLotties = {
+      Clear: "https://lottie.host/fe94e720-1578-4a7c-b30e-2ec2bdaf9de0/t3cOQWgiFH.json",
+      Clouds: "https://lottie.host/19a49e8c-3a59-4d14-87a2-b1685eb5ea85/JymNozQKMC.json",
+      Rain: "https://lottie.host/8819a0ff-d7aa-4c02-a235-15b08b70f830/M0NWboU9oT.json",
+      Thunderstorm: "https://lottie.host/c2315b11-5e5d-44e0-bb84-6a62c37f69ca/FAYqRlmOiU.json",
+      Snow: "https://lottie.host/367f5669-f6b1-4641-92a9-e5944a404d52/9ucfsckCDQ.json",
+      Drizzle: "https://lottie.host/f0e9d5a6-187e-4d74-b373-3e3a6c07e9e3/kfwA17YyFc.json",
+      Mist: "https://lottie.host/228be1ff-0d02-43e1-9e1d-38ab999b0f34/I6xl0ULcWv.json",
+      Smoke: "https://lottie.host/b94fc220-ccf7-40d1-9e9a-d9ce327a4417/Wvl5YAzqt7.json",
+      Haze: "https://lottie.host/7f0d1eb8-f843-4dd4-82de-1f7aa2607a77/cJSO05Oihm.json",
+      Fog: "https://lottie.host/f8a4a450-332d-49cd-9b06-b96f0f0f4f58/T8YRx6vCKe.json",
+      Sand: "https://lottie.host/2c7d15df-6a0d-4af2-8850-d83cbacbd6d6/V5ECMEqYTr.json",
+      Ash: "https://lottie.host/f3db8478-29e7-4a0e-84b6-9a17a4fd36a5/SXYVA5ogOz.json",
+      Squall: "https://lottie.host/b5c4d4e9-6a3e-4a64-b490-7e2383b8c8a4/VljALtDaFL.json",
+      Tornado: "https://lottie.host/13a5a2be-d537-493c-b2ff-75f3725096e7/BaqDjfW6Cv.json"
+    };
+
+    async function fetchWeather(lat, lon) {
+      const res = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
+      );
+      const data = await res.json();
+      updateUI(data);
+    }
+
+    function updateUI(data) {
+      const location = document.getElementById("location");
+      const temperature = document.getElementById("temperature");
+      const description = document.getElementById("description");
+      const lottieIcon = document.getElementById("lottie-icon");
+
+      const weatherMain = data.weather[0].main;
+
+      location.textContent = `${data.name}, ${data.sys.country}`;
+      temperature.textContent = `${Math.round(data.main.temp)}°C`;
+      description.textContent = data.weather[0].description;
+
+      const lottieURL = weatherLotties[weatherMain] || weatherLotties["Clear"];
+      lottieIcon.innerHTML = `
+        <lottie-player src="${lottieURL}" background="transparent" speed="1" loop autoplay></lottie-player>
+      `;
+    }
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            fetchWeather(lat, lon);
+          },
+          () => {
+            document.getElementById("location").textContent = "Location not allowed";
+          }
+        );
+      } else {
+        document.getElementById("location").textContent = "Geolocation not supported";
+      }
+    }
+
+    getLocation();
+  </script>
+</body>
+</html>
