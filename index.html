@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Neon Clouds | Aba-Art</title>
   <meta name="description" content="Cloud Overwatch App" />
+  <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/414/414927.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <style>
@@ -16,6 +17,12 @@
 
     body {
       background-color: var(--bg-dark);
+      transition: background-color 0.5s, color 0.5s;
+    }
+
+    body.day {
+      background-color: #f1f5f9;
+      color: #1e293b;
     }
 
     .neumorphic {
@@ -28,6 +35,13 @@
       opacity: 0;
       transform: translateY(20px);
       animation: fadeIn 1s ease forwards;
+    }
+
+    body.day .neumorphic {
+      background: #ffffff;
+      box-shadow:
+        8px 8px 16px rgba(0, 0, 0, 0.05),
+        -6px -6px 12px rgba(255, 255, 255, 0.6);
     }
 
     @keyframes fadeIn {
@@ -70,9 +84,28 @@
     .weather-icon.change {
       transform: rotate(360deg);
     }
+
+    .weather-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      opacity: 0.3;
+      background-size: cover;
+      background-position: center;
+      animation: fadein 2s ease;
+    }
+
+    @keyframes fadein {
+      from { opacity: 0; }
+      to { opacity: 0.3; }
+    }
   </style>
 </head>
 <body class="text-white flex flex-col items-center justify-center min-h-screen px-4">
+  <div id="weather-bg" class="weather-bg"></div>
 
   <div class="neumorphic p-6 max-w-xs w-full text-center">
     <h1 class="text-2xl font-bold mb-1 neon-text">Aba-Art</h1>
@@ -111,10 +144,52 @@
       Tornado: "fa-tornado"
     };
 
+    const weatherSounds = {
+      Clear: new Audio("https://www.soundjay.com/nature/birds-2.mp3"),
+      Rain: new Audio("https://www.soundjay.com/nature/rain-01.mp3"),
+      Thunderstorm: new Audio("https://www.soundjay.com/nature/thunderstorm-01.mp3")
+    };
+
+    function applyThemeByTime() {
+      const hour = new Date().getHours();
+      if (hour >= 6 && hour < 18) {
+        document.body.classList.add("day");
+      } else {
+        document.body.classList.remove("day");
+      }
+    }
+
+    function updateWeatherBackground(condition) {
+      const bg = document.getElementById("weather-bg");
+      let url = "";
+      switch (condition) {
+        case "Rain":
+        case "Drizzle":
+          url = "https://i.gifer.com/7VE.gif"; break;
+        case "Clear":
+          url = "https://i.gifer.com/Y6.gif"; break;
+        case "Clouds":
+          url = "https://i.gifer.com/VgY.gif"; break;
+        case "Snow":
+          url = "https://i.gifer.com/4ZL8.gif"; break;
+        default:
+          url = "https://i.gifer.com/VgY.gif";
+      }
+      bg.style.backgroundImage = `url('${url}')`;
+    }
+
+    function playWeatherSound(condition) {
+      Object.values(weatherSounds).forEach(s => s.pause());
+      const sound = weatherSounds[condition];
+      if (sound) {
+        sound.loop = true;
+        sound.volume = 0.4;
+        sound.play();
+      }
+    }
+
     async function fetchWeather(lat, lon) {
-      const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`
-      );
+      const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`);
       const data = await res.json();
       updateUI(data);
     }
@@ -131,7 +206,6 @@
       location.textContent = `${data.name}, ${data.sys.country}`;
       description.textContent = data.weather[0].description;
 
-      // Animate temperature count up
       const targetTemp = Math.round(data.main.temp);
       let currentTemp = 0;
       const step = targetTemp > 30 ? 2 : 1;
@@ -146,9 +220,12 @@
         }
       }, 30);
 
-      // Animate icon change
       weatherIcon.className = `weather-icon fas ${iconClass} change`;
       setTimeout(() => weatherIcon.classList.remove("change"), 500);
+
+      applyThemeByTime();
+      updateWeatherBackground(weatherMain);
+      playWeatherSound(weatherMain);
     }
 
     function getLocation() {
