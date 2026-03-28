@@ -2,131 +2,258 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Neon Clouds | Aba-Art</title>
-  <meta name="description" content="Cloud Overwatch App" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Over-Watch Green Weather App| Living Atmosphere | A1A </title>
+  <meta name="description" content="Immersive weather experience with natural grassmorphism design, dynamic animations, and ambient soundscapes." />
   <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/414/414927.png" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
   <style>
-    :root {
-      --neon: #00fff7;
-      --bg-dark: #121212;
-      --card-bg: #1f1f2e;
+    /* ----- GRASSMORPHISM CORE: organic, soft, no neon, no hyper shadows ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
     body {
-      background-color: var(--bg-dark);
-      transition: background-color 0.5s, color 0.5s;
+      min-height: 100vh;
+      background: linear-gradient(145deg, #e1f3db 0%, #c7e0be 100%);
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      position: relative;
+      transition: background 0.6s ease;
+      color: #2d3e2b;
     }
 
-    body.day {
-      background-color: #f1f5f9;
-      color: #1e293b;
+    body.night {
+      background: linear-gradient(135deg, #1f2e1c 0%, #2a3a26 100%);
+      color: #e2f0da;
     }
 
-    .neumorphic {
-      background: var(--card-bg);
-      border-radius: 20px;
-      box-shadow:
-        8px 8px 16px rgba(0, 0, 0, 0.6),
-        -6px -6px 12px rgba(255, 255, 255, 0.03);
-      transition: all 0.3s ease;
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeIn 1s ease forwards;
-    }
-
-    body.day .neumorphic {
-      background: #ffffff;
-      box-shadow:
-        8px 8px 16px rgba(0, 0, 0, 0.05),
-        -6px -6px 12px rgba(255, 255, 255, 0.6);
-    }
-
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .neon-text {
-      color: var(--neon);
-      text-shadow: 0 0 3px var(--neon), 0 0 7px var(--neon), 0 0 12px var(--neon);
-    }
-
-    .neon-ring {
-      border-radius: 50%;
-      box-shadow: 0 0 12px 3px var(--neon), inset 0 0 8px 2px var(--neon);
-      background: rgba(0, 255, 247, 0.05);
-      padding: 20px;
-      margin-top: 10px;
-      display: inline-block;
-      animation: pulse 3s infinite ease-in-out;
-    }
-
-    @keyframes pulse {
-      0%, 100% {
-        transform: scale(1);
-      }
-      50% {
-        transform: scale(1.1);
-      }
-    }
-
-    .weather-icon {
-      font-size: 60px;
-      color: var(--neon);
-      transition: transform 0.5s ease;
-    }
-
-    .weather-icon.change {
-      transform: rotate(360deg);
-    }
-
-    .weather-bg {
+    body::before {
+      content: "";
       position: fixed;
       top: 0;
       left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: -1;
-      opacity: 0.3;
-      background-size: cover;
-      background-position: center;
-      animation: fadein 2s ease;
+      width: 100%;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='1' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
     }
 
-    @keyframes fadein {
-      from { opacity: 0; }
-      to { opacity: 0.3; }
+    .grass-card {
+      background: rgba(245, 250, 235, 0.85);
+      backdrop-filter: blur(12px);
+      border-radius: 2rem;
+      box-shadow: 0 10px 25px -12px rgba(30, 50, 20, 0.25), 0 0 0 1px rgba(120, 150, 90, 0.2);
+      transition: all 0.3s ease;
+      width: 100%;
+      max-width: 400px;
+      z-index: 10;
+      border: 1px solid rgba(160, 190, 120, 0.5);
     }
+
+    body.night .grass-card {
+      background: rgba(35, 50, 30, 0.7);
+      border-color: rgba(140, 170, 100, 0.4);
+    }
+
+    .search-input {
+      background: rgba(250, 255, 240, 0.9);
+      border: 1px solid #b7cf9a;
+      border-radius: 60px;
+      padding: 0.7rem 1.2rem;
+      font-size: 0.9rem;
+      color: #2a4b2a;
+      outline: none;
+      transition: all 0.2s;
+      width: 100%;
+    }
+
+    .search-input:focus {
+      border-color: #6f9e4f;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(111, 158, 79, 0.2);
+    }
+
+    .grass-btn {
+      background: #e0f0d4;
+      border: none;
+      border-radius: 60px;
+      padding: 0.7rem 1rem;
+      color: #2c5e2a;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    }
+
+    .grass-btn:hover {
+      background: #cbe5bb;
+      transform: translateY(-1px);
+    }
+
+    .location-badge {
+      background: rgba(160, 190, 120, 0.25);
+      border-radius: 40px;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.85rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .weather-icon-frame {
+      background: rgba(180, 210, 140, 0.3);
+      width: 110px;
+      height: 110px;
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      transition: all 0.3s;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.02), 0 6px 12px rgba(60, 80, 30, 0.1);
+    }
+
+    .weather-icon {
+      font-size: 3.5rem;
+      color: #447e3a;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.05));
+      transition: transform 0.4s ease;
+    }
+
+    .temp-grass {
+      font-size: 3.2rem;
+      font-weight: 600;
+      color: #2f6b2f;
+      line-height: 1;
+    }
+
+    #weather-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .sound-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(100, 130, 70, 0.85);
+      backdrop-filter: blur(4px);
+      border-radius: 50px;
+      padding: 10px 18px;
+      font-size: 0.85rem;
+      color: white;
+      border: none;
+      cursor: pointer;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: 0.2s;
+      font-weight: 500;
+    }
+
+    .sound-toggle:hover {
+      background: #4f7942;
+      transform: scale(1.02);
+    }
+
+    footer {
+      font-size: 0.7rem;
+      color: #5a7a4b;
+      opacity: 0.8;
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+
+    body.night footer {
+      color: #aac79a;
+    }
+
+    .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #98b97a;
+      border-radius: 50%;
+      border-top-color: #34623c;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
 </head>
-<body class="text-white flex flex-col items-center justify-center min-h-screen px-4">
-  <div id="weather-bg" class="weather-bg"></div>
+<body>
+  <canvas id="weather-canvas"></canvas>
 
-  <div class="neumorphic p-6 max-w-xs w-full text-center">
-    <h1 class="text-2xl font-bold mb-1 neon-text">Aba-Art</h1>
-    <p class="text-sm mb-4 text-gray-400">Cloud Overwatch App</p>
+  <button id="soundToggle" class="sound-toggle">
+    <i class="fas fa-volume-up"></i> <span id="soundLabel">Ambient OFF</span>
+  </button>
 
-    <div id="location" class="text-gray-300 mb-2">Detecting location...</div>
-    <div id="temperature" class="text-4xl font-semibold mb-2 neon-text">--°C</div>
-    <div id="description" class="capitalize text-lg mb-4 neon-text">--</div>
+  <div class="grass-card p-6 md:p-7 text-center relative z-10">
+    <h1 class="text-xl font-semibold flex items-center justify-center gap-2 mb-1">
+      <i class="fas fa-leaf text-green-700"></i> Green Over-Watch Cloud
+    </h1>
+    <p class="text-xs text-green-700/70 mb-4">living atmosphere · grassmorphism</p>
 
-    <div id="icon" class="neon-ring mx-auto">
-      <i id="weather-icon" class="weather-icon fas fa-sun"></i>
+    <div class="flex gap-2 mb-4">
+      <input type="text" id="cityInput" class="search-input" placeholder="e.g., Kyoto, Paris, New York" autocomplete="off">
+      <button id="searchBtn" class="grass-btn"><i class="fas fa-search"></i></button>
+      <button id="geoBtn" class="grass-btn" title="My location"><i class="fas fa-location-dot"></i></button>
+    </div>
+
+    <div class="location-badge justify-center mb-2">
+      <i class="fas fa-map-marker-alt"></i>
+      <span id="locationName">--</span>
+    </div>
+
+    <div id="tempValue" class="temp-grass">--°C</div>
+    <div id="weatherDesc" class="text-green-800/80 text-base capitalize mt-1">--</div>
+
+    <div class="weather-icon-frame mt-3">
+      <i id="weatherIcon" class="weather-icon fas fa-cloud-sun"></i>
+    </div>
+
+    <div class="grid grid-cols-3 gap-2 mt-5 text-sm">
+      <div class="bg-white/20 rounded-xl p-2">
+        <div class="text-green-800/60 text-xs">Humidity</div>
+        <div id="humidity" class="font-medium">--%</div>
+      </div>
+      <div class="bg-white/20 rounded-xl p-2">
+        <div class="text-green-800/60 text-xs">Wind</div>
+        <div id="wind" class="font-medium">-- km/h</div>
+      </div>
+      <div class="bg-white/20 rounded-xl p-2">
+        <div class="text-green-800/60 text-xs">Feels like</div>
+        <div id="feelsLike" class="font-medium">--°</div>
+      </div>
     </div>
   </div>
-
-  <footer class="mt-6 text-sm text-gray-500">
-    © Aba-Art-App
+  <footer>
+    <i class="fas fa-cloud-rain"></i> dynamic particles · ambient sound (click button to enable) <br> egid24abaysen (aba1art) - All rights Reserverd A1A
   </footer>
 
   <script>
-    const apiKey = "097cb68abff2af33526e7777ce5ac36b";
-
+    // ----------------------------- WEATHER API -----------------------------
+    const API_KEY = "097cb68abff2af33526e7777ce5ac36b";
+    
     const weatherIcons = {
       Clear: "fa-sun",
       Clouds: "fa-cloud",
@@ -138,114 +265,570 @@
       Smoke: "fa-smog",
       Haze: "fa-smog",
       Fog: "fa-smog",
-      Sand: "fa-smog",
+      Dust: "fa-wind",
+      Sand: "fa-wind",
       Ash: "fa-smog",
       Squall: "fa-wind",
       Tornado: "fa-tornado"
     };
 
-    const weatherSounds = {
-      Clear: new Audio("https://www.soundjay.com/nature/birds-2.mp3"),
-      Rain: new Audio("https://www.soundjay.com/nature/rain-01.mp3"),
-      Thunderstorm: new Audio("https://www.soundjay.com/nature/thunderstorm-01.mp3")
-    };
+    // DOM elements
+    const locationSpan = document.getElementById("locationName");
+    const tempSpan = document.getElementById("tempValue");
+    const descSpan = document.getElementById("weatherDesc");
+    const weatherIconEl = document.getElementById("weatherIcon");
+    const humiditySpan = document.getElementById("humidity");
+    const windSpan = document.getElementById("wind");
+    const feelsLikeSpan = document.getElementById("feelsLike");
+    const cityInput = document.getElementById("cityInput");
+    const searchBtn = document.getElementById("searchBtn");
+    const geoBtn = document.getElementById("geoBtn");
 
-    function applyThemeByTime() {
-      const hour = new Date().getHours();
-      if (hour >= 6 && hour < 18) {
-        document.body.classList.add("day");
-      } else {
-        document.body.classList.remove("day");
+    // ----------------------------- CANVAS PARTICLES (real backdrop) -----------------------------
+    const canvas = document.getElementById("weather-canvas");
+    let ctx = canvas.getContext("2d");
+    let animationId = null;
+    let currentWeatherCondition = "Clear";
+    let particles = [];
+    let thunderFlash = 0;
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      initParticlesForCondition(currentWeatherCondition);
+    });
+
+    class Particle {
+      constructor(x, y, size, speedY, speedX, opacity, color, isRain = false) {
+        this.x = x; this.y = y; this.size = size; this.speedY = speedY;
+        this.speedX = speedX; this.opacity = opacity; this.color = color; this.isRain = isRain;
       }
     }
 
-    function updateWeatherBackground(condition) {
-      const bg = document.getElementById("weather-bg");
-      let url = "";
-      switch (condition) {
-        case "Rain":
-        case "Drizzle":
-          url = "https://i.gifer.com/7VE.gif"; break;
-        case "Clear":
-          url = "https://i.gifer.com/Y6.gif"; break;
-        case "Clouds":
-          url = "https://i.gifer.com/VgY.gif"; break;
-        case "Snow":
-          url = "https://i.gifer.com/4ZL8.gif"; break;
-        default:
-          url = "https://i.gifer.com/VgY.gif";
-      }
-      bg.style.backgroundImage = `url('${url}')`;
-    }
-
-    function playWeatherSound(condition) {
-      Object.values(weatherSounds).forEach(s => s.pause());
-      const sound = weatherSounds[condition];
-      if (sound) {
-        sound.loop = true;
-        sound.volume = 0.4;
-        sound.play();
-      }
-    }
-
-    async function fetchWeather(lat, lon) {
-      const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`);
-      const data = await res.json();
-      updateUI(data);
-    }
-
-    function updateUI(data) {
-      const location = document.getElementById("location");
-      const temperature = document.getElementById("temperature");
-      const description = document.getElementById("description");
-      const weatherIcon = document.getElementById("weather-icon");
-
-      const weatherMain = data.weather[0].main;
-      const iconClass = weatherIcons[weatherMain] || "fa-question-circle";
-
-      location.textContent = `${data.name}, ${data.sys.country}`;
-      description.textContent = data.weather[0].description;
-
-      const targetTemp = Math.round(data.main.temp);
-      let currentTemp = 0;
-      const step = targetTemp > 30 ? 2 : 1;
-
-      const counter = setInterval(() => {
-        if (currentTemp >= targetTemp) {
-          temperature.textContent = `${targetTemp}°C`;
-          clearInterval(counter);
-        } else {
-          currentTemp += step;
-          temperature.textContent = `${currentTemp}°C`;
+    function initParticlesForCondition(condition) {
+      particles = [];
+      const w = canvas.width, h = canvas.height;
+      if (!w || !h) return;
+      const cond = condition.toLowerCase();
+      
+      if (cond === "rain" || cond === "drizzle" || cond === "thunderstorm") {
+        let count = cond === "drizzle" ? 100 : (cond === "thunderstorm" ? 150 : 180);
+        for (let i = 0; i < count; i++) {
+          particles.push(new Particle(
+            Math.random() * w, Math.random() * h - 30,
+            Math.random() * 2.5 + 1.5,
+            Math.random() * 6 + 5,
+            (Math.random() - 0.5) * 0.6,
+            Math.random() * 0.5 + 0.4,
+            "rgba(100, 140, 70, 0.7)", true
+          ));
         }
-      }, 30);
-
-      weatherIcon.className = `weather-icon fas ${iconClass} change`;
-      setTimeout(() => weatherIcon.classList.remove("change"), 500);
-
-      applyThemeByTime();
-      updateWeatherBackground(weatherMain);
-      playWeatherSound(weatherMain);
-    }
-
-    function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const lat = position.coords.latitude;
-            const lon = position.coords.longitude;
-            fetchWeather(lat, lon);
-          },
-          () => {
-            document.getElementById("location").textContent = "Location not allowed";
-          }
-        );
+      } else if (cond === "snow") {
+        for (let i = 0; i < 100; i++) {
+          particles.push(new Particle(
+            Math.random() * w, Math.random() * h,
+            Math.random() * 5 + 2,
+            Math.random() * 1.2 + 0.5,
+            (Math.random() - 0.5) * 0.5,
+            Math.random() * 0.7 + 0.3,
+            "rgba(235, 245, 230, 0.9)"
+          ));
+        }
+      } else if (cond === "clouds") {
+        for (let i = 0; i < 45; i++) {
+          particles.push(new Particle(
+            Math.random() * w, Math.random() * h * 0.6,
+            Math.random() * 38 + 20,
+            Math.random() * 0.2 - 0.1,
+            Math.random() * 0.3 + 0.1,
+            Math.random() * 0.2 + 0.1,
+            "rgba(150, 170, 120, 0.35)"
+          ));
+        }
+      } else if (cond === "clear") {
+        for (let i = 0; i < 80; i++) {
+          particles.push(new Particle(
+            Math.random() * w, Math.random() * h,
+            Math.random() * 3 + 1,
+            (Math.random() - 0.5) * 0.3,
+            (Math.random() - 0.5) * 0.3,
+            Math.random() * 0.4 + 0.2,
+            "rgba(220, 190, 100, 0.5)"
+          ));
+        }
+      } else if (cond === "mist" || cond === "fog" || cond === "haze") {
+        for (let i = 0; i < 60; i++) {
+          particles.push(new Particle(
+            Math.random() * w, Math.random() * h,
+            Math.random() * 50 + 25,
+            Math.random() * 0.08,
+            Math.random() * 0.15 - 0.07,
+            Math.random() * 0.1 + 0.03,
+            "rgba(170, 180, 140, 0.3)"
+          ));
+        }
       } else {
-        document.getElementById("location").textContent = "Geolocation not supported";
+        for (let i = 0; i < 40; i++) {
+          particles.push(new Particle(
+            Math.random() * w, Math.random() * h,
+            Math.random() * 6 + 2,
+            Math.random() * 0.4,
+            (Math.random() - 0.5) * 0.3,
+            0.25,
+            "rgba(90, 110, 70, 0.3)"
+          ));
+        }
       }
     }
 
-    getLocation();
+    function drawParticles() {
+      if (!ctx) return;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      
+      if (currentWeatherCondition === "Thunderstorm" && thunderFlash > 0) {
+        ctx.fillStyle = `rgba(210, 210, 170, ${thunderFlash * 0.35})`;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        thunderFlash -= 0.02;
+      }
+      
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        const isRainCond = (currentWeatherCondition === "Rain" || currentWeatherCondition === "Drizzle" || currentWeatherCondition === "Thunderstorm");
+        
+        if (isRainCond && p.size < 3.5) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p.x + p.speedX * 0.5, p.y + p.speedY);
+          ctx.lineWidth = p.size * 0.7;
+          ctx.strokeStyle = `rgba(100, 140, 70, ${p.opacity})`;
+          ctx.stroke();
+        } else if (currentWeatherCondition === "Snow") {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * 0.6, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(245, 255, 240, ${p.opacity})`;
+          ctx.fill();
+        } else {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size * 0.7, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+        }
+        
+        if (isRainCond) {
+          p.x += p.speedX;
+          p.y += p.speedY;
+          if (p.y > canvas.height + 40) { p.y = -20; p.x = Math.random() * canvas.width; }
+          if (p.x > canvas.width + 60) p.x = -40;
+          if (p.x < -60) p.x = canvas.width + 40;
+        } else if (currentWeatherCondition === "Snow") {
+          p.x += p.speedX;
+          p.y += p.speedY;
+          if (p.y > canvas.height + 30) { p.y = -20; p.x = Math.random() * canvas.width; }
+          if (p.x > canvas.width) p.x = 0;
+          if (p.x < 0) p.x = canvas.width;
+        } else if (currentWeatherCondition === "Clouds") {
+          p.x += p.speedX;
+          p.y += p.speedY * 0.2;
+          if (p.x > canvas.width + 180) p.x = -150;
+          if (p.x < -180) p.x = canvas.width + 80;
+          if (p.y > canvas.height + 120) p.y = -80;
+          if (p.y < -100) p.y = canvas.height + 60;
+        } else {
+          p.x += p.speedX;
+          p.y += p.speedY;
+          if (p.x > canvas.width + 80) p.x = -60;
+          if (p.x < -80) p.x = canvas.width + 40;
+          if (p.y > canvas.height + 80) p.y = -50;
+          if (p.y < -70) p.y = canvas.height + 40;
+        }
+      }
+      animationId = requestAnimationFrame(drawParticles);
+    }
+
+    function startCanvasAnimation(condition) {
+      if (animationId) cancelAnimationFrame(animationId);
+      currentWeatherCondition = condition;
+      initParticlesForCondition(condition);
+      if (condition === "Thunderstorm") thunderFlash = 0.6;
+      else thunderFlash = 0;
+      resizeCanvas();
+      drawParticles();
+    }
+
+    setInterval(() => {
+      if (currentWeatherCondition === "Thunderstorm" && Math.random() < 0.015) thunderFlash = 0.55;
+    }, 700);
+
+    // ----------------------------- AUDIO ENGINE (Web Audio, no external files) -----------------------------
+    let audioCtx = null;
+    let isAudioEnabled = false;
+    let currentAudioNodes = { masterGain: null, source: null, filter: null, noiseNode: null, thunderTimeout: null };
+    let currentWeatherForAudio = null;
+
+    const soundToggleBtn = document.getElementById("soundToggle");
+    const soundLabel = document.getElementById("soundLabel");
+
+    function initAudioContext() {
+      if (audioCtx) return;
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      // create master gain
+      currentAudioNodes.masterGain = audioCtx.createGain();
+      currentAudioNodes.masterGain.gain.value = 0.45;
+      currentAudioNodes.masterGain.connect(audioCtx.destination);
+    }
+
+    // generate white noise buffer
+    function createNoiseBuffer(duration) {
+      const sampleRate = audioCtx.sampleRate;
+      const bufferSize = duration * sampleRate;
+      const buffer = audioCtx.createBuffer(1, bufferSize, sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * 0.6;
+      }
+      return buffer;
+    }
+
+    function stopAllSounds() {
+      if (currentAudioNodes.source) {
+        try { currentAudioNodes.source.stop(); } catch(e) {}
+        currentAudioNodes.source.disconnect();
+        currentAudioNodes.source = null;
+      }
+      if (currentAudioNodes.noiseNode) {
+        try { currentAudioNodes.noiseNode.stop(); } catch(e) {}
+        currentAudioNodes.noiseNode.disconnect();
+        currentAudioNodes.noiseNode = null;
+      }
+      if (currentAudioNodes.thunderTimeout) clearTimeout(currentAudioNodes.thunderTimeout);
+      if (currentAudioNodes.filter) {
+        currentAudioNodes.filter.disconnect();
+        currentAudioNodes.filter = null;
+      }
+    }
+
+    function playWeatherSound(weather) {
+      if (!isAudioEnabled || !audioCtx) return;
+      stopAllSounds();
+      currentWeatherForAudio = weather;
+      
+      const now = audioCtx.currentTime;
+      const master = currentAudioNodes.masterGain;
+      
+      if (weather === "Clear") {
+        // gentle birds chirp: use a short oscillator envelope repeated
+        const scheduleChirp = () => {
+          if (!isAudioEnabled || currentWeatherForAudio !== "Clear") return;
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = "sine";
+          osc.frequency.value = 1400 + Math.random() * 400;
+          gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.35);
+          osc.connect(gain);
+          gain.connect(master);
+          osc.start();
+          osc.stop(audioCtx.currentTime + 0.35);
+          setTimeout(() => { if (isAudioEnabled && currentWeatherForAudio === "Clear") scheduleChirp(); }, 2800 + Math.random() * 2000);
+        };
+        scheduleChirp();
+        // soft wind pad
+        const wind = audioCtx.createOscillator();
+        const windGain = audioCtx.createGain();
+        wind.type = "sine";
+        wind.frequency.value = 85;
+        windGain.gain.value = 0.09;
+        wind.connect(windGain);
+        windGain.connect(master);
+        wind.start();
+        currentAudioNodes.source = wind;
+        currentAudioNodes.filter = windGain;
+      } 
+      else if (weather === "Clouds") {
+        // filtered noise – gentle wind
+        const buffer = createNoiseBuffer(10);
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+        noise.loop = true;
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.value = 480;
+        filter.Q.value = 5;
+        const gain = audioCtx.createGain();
+        gain.gain.value = 0.2;
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(master);
+        noise.start();
+        currentAudioNodes.noiseNode = noise;
+        currentAudioNodes.filter = filter;
+      }
+      else if (weather === "Rain" || weather === "Drizzle") {
+        // steady filtered noise + occasional droplet
+        const buffer = createNoiseBuffer(10);
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+        noise.loop = true;
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = "highpass";
+        filter.frequency.value = 800;
+        filter.Q.value = 3;
+        const gain = audioCtx.createGain();
+        gain.gain.value = 0.28;
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(master);
+        noise.start();
+        currentAudioNodes.noiseNode = noise;
+        currentAudioNodes.filter = filter;
+        
+        const addDroplet = () => {
+          if (!isAudioEnabled || (currentWeatherForAudio !== "Rain" && currentWeatherForAudio !== "Drizzle")) return;
+          const droplet = audioCtx.createOscillator();
+          const dropGain = audioCtx.createGain();
+          droplet.type = "sine";
+          droplet.frequency.value = 1800;
+          dropGain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+          dropGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.2);
+          droplet.connect(dropGain);
+          dropGain.connect(master);
+          droplet.start();
+          droplet.stop(audioCtx.currentTime + 0.2);
+          setTimeout(addDroplet, 300 + Math.random() * 700);
+        };
+        addDroplet();
+      }
+      else if (weather === "Thunderstorm") {
+        // rain base + periodic thunder
+        const rainBuffer = createNoiseBuffer(10);
+        const rainNoise = audioCtx.createBufferSource();
+        rainNoise.buffer = rainBuffer;
+        rainNoise.loop = true;
+        const rainFilter = audioCtx.createBiquadFilter();
+        rainFilter.type = "highpass";
+        rainFilter.frequency.value = 700;
+        const rainGain = audioCtx.createGain();
+        rainGain.gain.value = 0.32;
+        rainNoise.connect(rainFilter);
+        rainFilter.connect(rainGain);
+        rainGain.connect(master);
+        rainNoise.start();
+        currentAudioNodes.noiseNode = rainNoise;
+        
+        const thunder = () => {
+          if (!isAudioEnabled || currentWeatherForAudio !== "Thunderstorm") return;
+          const rumble = audioCtx.createBufferSource();
+          const rumbleBuffer = createNoiseBuffer(1.8);
+          rumble.buffer = rumbleBuffer;
+          const rumbleFilter = audioCtx.createBiquadFilter();
+          rumbleFilter.type = "lowpass";
+          rumbleFilter.frequency.value = 180;
+          const rumbleGain = audioCtx.createGain();
+          rumbleGain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+          rumbleGain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.5);
+          rumble.connect(rumbleFilter);
+          rumbleFilter.connect(rumbleGain);
+          rumbleGain.connect(master);
+          rumble.start();
+          rumble.stop(audioCtx.currentTime + 1.6);
+          currentAudioNodes.thunderTimeout = setTimeout(thunder, 6000 + Math.random() * 5000);
+        };
+        thunder();
+      }
+      else if (weather === "Snow") {
+        // high-frequency wind
+        const buffer = createNoiseBuffer(10);
+        const noise = audioCtx.createBufferSource();
+        noise.buffer = buffer;
+        noise.loop = true;
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = "bandpass";
+        filter.frequency.value = 2400;
+        filter.Q.value = 2;
+        const gain = audioCtx.createGain();
+        gain.gain.value = 0.12;
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(master);
+        noise.start();
+        currentAudioNodes.noiseNode = noise;
+        currentAudioNodes.filter = filter;
+      }
+      else {
+        // default gentle hum
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = "sine";
+        osc.frequency.value = 110;
+        gain.gain.value = 0.06;
+        osc.connect(gain);
+        gain.connect(master);
+        osc.start();
+        currentAudioNodes.source = osc;
+      }
+    }
+
+    function enableAudio() {
+      if (!audioCtx) initAudioContext();
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      isAudioEnabled = true;
+      soundToggleBtn.innerHTML = '<i class="fas fa-volume-up"></i> <span>Ambient ON</span>';
+      soundLabel.innerText = "Ambient ON";
+      playWeatherSound(currentWeatherCondition);
+    }
+
+    function disableAudio() {
+      isAudioEnabled = false;
+      stopAllSounds();
+      soundToggleBtn.innerHTML = '<i class="fas fa-volume-mute"></i> <span>Ambient OFF</span>';
+      soundLabel.innerText = "Ambient OFF";
+    }
+
+    function toggleAudio() {
+      if (isAudioEnabled) {
+        disableAudio();
+      } else {
+        enableAudio();
+      }
+    }
+    soundToggleBtn.addEventListener("click", toggleAudio);
+    // initial disabled state
+    disableAudio();
+
+    // ----------------------------- WEATHER UI UPDATE -----------------------------
+    let tempAnimInterval = null;
+    function updateWeatherUI(data, customLocationName = null) {
+      const condition = data.weather[0].main;
+      const description = data.weather[0].description;
+      const tempC = Math.round(data.main.temp);
+      const iconClass = weatherIcons[condition] || "fa-cloud-sun";
+      const locationDisplay = customLocationName || `${data.name}, ${data.sys.country}`;
+      
+      locationSpan.innerText = locationDisplay;
+      descSpan.innerText = description;
+      humiditySpan.innerText = `${data.main.humidity}%`;
+      windSpan.innerText = `${Math.round(data.wind.speed * 3.6)} km/h`;
+      feelsLikeSpan.innerText = `${Math.round(data.main.feels_like)}°`;
+      
+      if (tempAnimInterval) clearInterval(tempAnimInterval);
+      let startVal = parseInt(tempSpan.innerText) || tempC;
+      let target = tempC;
+      let stepVal = target > startVal ? 1 : (target < startVal ? -1 : 0);
+      let currentVal = startVal;
+      tempAnimInterval = setInterval(() => {
+        if (currentVal === target) {
+          clearInterval(tempAnimInterval);
+          tempSpan.innerText = `${target}°C`;
+        } else {
+          currentVal += stepVal;
+          if ((stepVal > 0 && currentVal > target) || (stepVal < 0 && currentVal < target)) currentVal = target;
+          tempSpan.innerText = `${currentVal}°C`;
+        }
+      }, 28);
+      
+      weatherIconEl.className = `weather-icon fas ${iconClass}`;
+      void weatherIconEl.offsetWidth;
+      weatherIconEl.style.transform = 'scale(1.1)';
+      setTimeout(() => weatherIconEl.style.transform = 'scale(1)', 280);
+      
+      startCanvasAnimation(condition);
+      
+      // update audio if enabled
+      if (isAudioEnabled) {
+        playWeatherSound(condition);
+      }
+      
+      const hour = new Date().getHours();
+      if (hour >= 6 && hour < 18) document.body.classList.remove("night");
+      else document.body.classList.add("night");
+    }
+    
+    function showError(msg) {
+      const errDiv = document.createElement("div");
+      errDiv.className = "text-xs text-amber-800 bg-amber-100/60 rounded-full px-3 py-1 mt-2";
+      errDiv.innerText = msg;
+      const card = document.querySelector(".grass-card");
+      const existing = card.querySelector(".error-temp");
+      if (existing) existing.remove();
+      errDiv.classList.add("error-temp");
+      card.appendChild(errDiv);
+      setTimeout(() => errDiv.remove(), 2500);
+    }
+    
+    async function fetchWeatherByCoords(lat, lon) {
+      try {
+        const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`);
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        updateWeatherUI(data, `${data.name}, ${data.sys.country}`);
+      } catch (err) {
+        showError("Unable to fetch weather for this location.");
+      }
+    }
+    
+    async function fetchWeatherByCity(city) {
+      if (!city.trim()) { showError("Please enter a city name."); return; }
+      const originalText = searchBtn.innerHTML;
+      searchBtn.innerHTML = '<div class="spinner"></div>';
+      try {
+        const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${encodeURIComponent(city)}&appid=${API_KEY}&units=metric`);
+        if (!res.ok) throw new Error("City not found");
+        const data = await res.json();
+        updateWeatherUI(data, `${data.name}, ${data.sys.country}`);
+        cityInput.value = data.name;
+      } catch (err) {
+        showError(`"${city}" not found. Try another.`);
+      } finally {
+        searchBtn.innerHTML = originalText;
+      }
+    }
+    
+    function getUserLocation() {
+      if (!navigator.geolocation) {
+        showError("Geolocation not supported.");
+        fetchWeatherByCity("Kyoto");
+        return;
+      }
+      geoBtn.innerHTML = '<div class="spinner"></div>';
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          fetchWeatherByCoords(pos.coords.latitude, pos.coords.longitude);
+          geoBtn.innerHTML = '<i class="fas fa-location-dot"></i>';
+        },
+        () => {
+          geoBtn.innerHTML = '<i class="fas fa-location-dot"></i>';
+          showError("Location denied. Search manually.");
+          fetchWeatherByCity("Kigali");
+        }
+      );
+    }
+    
+    searchBtn.addEventListener("click", () => {
+      const city = cityInput.value.trim();
+      if (city) fetchWeatherByCity(city);
+      else showError("Type a city name.");
+    });
+    cityInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        const city = cityInput.value.trim();
+        if (city) fetchWeatherByCity(city);
+      }
+    });
+    geoBtn.addEventListener("click", getUserLocation);
+    
+    function init() {
+      resizeCanvas();
+      startCanvasAnimation("Clear");
+      getUserLocation(); 
+    }
+    window.addEventListener("resize", () => {
+      resizeCanvas();
+      if (currentWeatherCondition) initParticlesForCondition(currentWeatherCondition);
+    });
+    init();
   </script>
 </body>
 </html>
